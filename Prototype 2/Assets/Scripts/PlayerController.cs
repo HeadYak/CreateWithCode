@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float horizontalInput;
-    private float speed = 10f;
+    public float horizontalInput;
+    public float speed = 10f;
+
+    public float xRange = 10;
     // Start is called before the first frame update
+
+    public GameObject projectilePrefab;
+
+
     void Start()
     {
         
@@ -15,7 +21,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(transform.position.x < -10){
+            transform.position = new Vector3(-xRange, transform.position.y,transform.position.z);
+        }
+
+        if (transform.position.x > 10)
+        {
+            transform.position = new Vector3(xRange, transform.position.y, transform.position.z);
+        }
+
+
         horizontalInput = Input.GetAxis("Horizontal");
         transform.Translate(Vector3.right*horizontalInput*Time.deltaTime*speed);
+
+        if(Input.GetKeyDown(KeyCode.Space)){
+            //Launch a projectile from the player
+            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+        }
+
     }
 }
